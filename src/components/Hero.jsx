@@ -1,11 +1,16 @@
+import { useInViewOnce } from '../hooks/useInViewOnce.js'
+import { AnimatedMetricValue } from './AnimatedMetricValue.jsx'
+
 const metrics = [
-  { value: '90%', label: 'Faster response time' },
-  { value: '35%', label: 'More booked appointments' },
-  { value: '24/7', label: 'Lead availability' },
-  { value: '7 Days', label: 'From kickoff to launch' },
+  { kind: 'percent', end: 90, label: 'Faster response time' },
+  { kind: 'percent', end: 35, label: 'More booked appointments' },
+  { kind: 'ratio', left: 24, right: 7, label: 'Lead availability' },
+  { kind: 'days', end: 7, label: 'From kickoff to launch' },
 ]
 
 export default function Hero() {
+  const [metricsRef, metricsActive] = useInViewOnce({ threshold: 0.2 })
+
   return (
     <section className="relative isolate overflow-hidden">
       {/* Background video */}
@@ -82,12 +87,12 @@ export default function Hero() {
         </div>
 
         {/* Metrics strip */}
-        <div className="mx-auto mt-16 max-w-5xl">
+        <div ref={metricsRef} className="mx-auto mt-16 max-w-5xl">
           <div className="glass-card !p-0 grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-white/10">
             {metrics.map((m) => (
               <div key={m.label} className="p-8 text-center">
-                <div className="font-display text-4xl font-bold text-brand-500">
-                  {m.value}
+                <div className="font-display text-4xl font-bold text-brand-500 tabular-nums">
+                  <AnimatedMetricValue metric={m} active={metricsActive} />
                 </div>
                 <div className="mt-2 label-sm text-white/60 tracking-wideish">
                   {m.label}

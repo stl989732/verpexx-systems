@@ -1,11 +1,36 @@
+import { useInViewOnce } from '../hooks/useInViewOnce.js'
+import { AnimatedMetricValue } from './AnimatedMetricValue.jsx'
+
 const stats = [
-  { value: '90%', label: 'Faster response time', sub: 'Reply in seconds, not hours' },
-  { value: '35%', label: 'More bookings', sub: 'From the same ad spend' },
-  { value: '3×', label: 'Revenue growth', sub: 'Within 90 days of launch' },
-  { value: '60%', label: 'Time saved', sub: 'On admin, follow-up & quoting' },
+  {
+    kind: 'percent',
+    end: 90,
+    label: 'Faster response time',
+    sub: 'Reply in seconds, not hours',
+  },
+  {
+    kind: 'percent',
+    end: 35,
+    label: 'More bookings',
+    sub: 'From the same ad spend',
+  },
+  {
+    kind: 'mult',
+    end: 3,
+    label: 'Revenue growth',
+    sub: 'Within 90 days of launch',
+  },
+  {
+    kind: 'percent',
+    end: 60,
+    label: 'Time saved',
+    sub: 'On admin, follow-up & quoting',
+  },
 ]
 
 export default function Results() {
+  const [statsRef, statsActive] = useInViewOnce({ threshold: 0.15 })
+
   return (
     <section id="results" className="relative section-pad">
       <div
@@ -23,14 +48,17 @@ export default function Results() {
           </p>
         </div>
 
-        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div
+          ref={statsRef}
+          className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
+        >
           {stats.map((s) => (
             <div
               key={s.label}
               className="glass-card card-lift relative overflow-hidden text-center"
             >
-              <div className="font-display text-5xl sm:text-6xl font-bold text-brand-500">
-                {s.value}
+              <div className="font-display text-5xl sm:text-6xl font-bold text-brand-500 tabular-nums">
+                <AnimatedMetricValue metric={s} active={statsActive} />
               </div>
               <div className="mt-4 text-base font-semibold text-white">
                 {s.label}

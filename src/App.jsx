@@ -11,6 +11,7 @@ import Pricing from './components/Pricing.jsx'
 import FAQ from './components/FAQ.jsx'
 import Contact from './components/Contact.jsx'
 import Footer from './components/Footer.jsx'
+import InquiryFormPopup from './components/InquiryFormPopup.jsx'
 
 export default function App() {
   return (
@@ -40,6 +41,7 @@ export default function App() {
         </main>
         <Footer />
       </div>
+      <InquiryFormPopup />
     </div>
   )
 }
